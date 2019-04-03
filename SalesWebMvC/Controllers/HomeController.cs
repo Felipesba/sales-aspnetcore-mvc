@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SalesWebMvC.Models;
 
-namespace SalesWebMvC.Controllers
+namespace SalesWebMvC.Controllers 
 {
     public class HomeController : Controller
     {
