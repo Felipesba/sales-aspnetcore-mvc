@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMvC.Models;
+using SalesWebMvC.Services;
 
 namespace SalesWebMvC
 {
@@ -39,6 +40,9 @@ namespace SalesWebMvC
             services.AddDbContext<SalesWebMvCContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SalesWebMvCContext"), builder =>
                         builder.MigrationsAssembly("SalesWebMvC")));
+
+            services.AddScoped<SellerService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
