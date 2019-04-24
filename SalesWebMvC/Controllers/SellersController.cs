@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SalesWebMvC.Models;
 using SalesWebMvC.Services;
 
 namespace SalesWebMvC.Controllers
@@ -23,5 +24,21 @@ namespace SalesWebMvC.Controllers
 
             return View(listSellers);
         }
+
+        // GET: Seller/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Seller/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Seller seller)
+        {
+            _sellerService.Insert(seller);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
