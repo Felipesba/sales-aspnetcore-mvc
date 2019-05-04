@@ -23,7 +23,7 @@ namespace SalesWebMvC.Controllers
 
         public IActionResult Index()
         {
-            var listSellers = _sellerService.findAll();
+            var listSellers = _sellerService.FindAll();
 
             return View(listSellers);
         }
@@ -36,7 +36,7 @@ namespace SalesWebMvC.Controllers
             return View(viewModel);
         }
 
-        // POST: Seller/Create
+        // POST: Seller/Create/id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
@@ -45,7 +45,7 @@ namespace SalesWebMvC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Seller/Delete
+        // GET: Seller/Delete/id
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -72,6 +72,22 @@ namespace SalesWebMvC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //GET: Seller/Details
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindByID(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
     }
 
-}
+    }

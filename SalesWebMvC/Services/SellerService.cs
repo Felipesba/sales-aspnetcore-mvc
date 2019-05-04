@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace SalesWebMvC.Services
 {
     public class SellerService
@@ -19,7 +20,7 @@ namespace SalesWebMvC.Services
             _context = context;
         }
 
-        public List<Seller> findAll()
+        public List<Seller> FindAll()
         {
             return _context.Seller.ToList();
         }
@@ -32,7 +33,7 @@ namespace SalesWebMvC.Services
 
         public Seller FindByID (int id)
         {
-            return _context.Seller.FirstOrDefault(m => m.Id == id);
+            return _context.Seller.Include(obj => obj.Department).FirstOrDefault(m => m.Id == id);
 
         }
 
