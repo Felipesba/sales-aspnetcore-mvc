@@ -16,6 +16,7 @@ namespace SalesWebMvC.Controllers
         private readonly SellerService _sellerService;
         private readonly DepartmentService _departmentService;
 
+        //Injeção de Dependência
         public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
@@ -23,17 +24,17 @@ namespace SalesWebMvC.Controllers
         }
 
         //GET: Seller/Index
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var listSellers = _sellerService.FindAll();
+            var listSellers = await _sellerService.FindAllAsync();
 
             return View(listSellers);
         }
 
         // GET: Seller/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var departments = _departmentService.findAll();
+            var departments = await _departmentService.findAllAsync();
             var viewModel = new SellerFormViewModel { Departments = departments };
             return View(viewModel);
         }
@@ -41,28 +42,28 @@ namespace SalesWebMvC.Controllers
         // POST: Seller/Create/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Seller seller)
+        public async Task<IActionResult> Create(Seller seller)
         {
             if (!ModelState.IsValid)
             {
-                var departments = _departmentService.findAll();
+                var departments = await _departmentService.findAllAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
 
-            _sellerService.Insert(seller);
+            await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Seller/Delete/id
-        public IActionResult Delete(int? id)
+        public async  Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new {message = "ID Not Provided" });
             }
 
-            var sellers = _sellerService.FindByID(id.Value);
+            var sellers = await _sellerService.FindByIDAsync(id.Value);
             
             if (sellers == null)
             {
@@ -75,21 +76,21 @@ namespace SalesWebMvC.Controllers
         // POST: Seller/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _sellerService.Remove(id);
+            await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         //GET: Seller/Details
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID Not Provided" });
             }
 
-            var obj = _sellerService.FindByID(id.Value);
+            var obj = await _sellerService.FindByIDAsync(id.Value);
             if (obj == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID Not Found" });
@@ -100,21 +101,21 @@ namespace SalesWebMvC.Controllers
         }
 
         // GET: Seller/Edit/id
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID Not Provided" });
             }
 
-            var sellers = _sellerService.FindByID(id.Value);
+            var sellers = await _sellerService.FindByIDAsync(id.Value);
 
             if (sellers == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID Not Found" });
             }
 
-            List<Department> departments = _departmentService.findAll();
+            List<Department> departments = await _departmentService.findAllAsync();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = sellers, Departments = departments };
             return View(viewModel);
         }
@@ -122,11 +123,11 @@ namespace SalesWebMvC.Controllers
         // POST: Seller/Edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
             if (!ModelState.IsValid)
             {
-                var departments = _departmentService.findAll();
+                var departments = await _departmentService.findAllAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
                 return View(viewModel);
             }
@@ -138,7 +139,7 @@ namespace SalesWebMvC.Controllers
 
             try
             {
-                _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
 
             }
